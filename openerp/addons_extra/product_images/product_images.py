@@ -22,7 +22,6 @@ import os
 import glob
 import openerp
 from openerp import tools
-
 from openerp.osv import fields, orm, osv
 from openerp.tools.translate import _
 
@@ -43,7 +42,9 @@ class product_images(orm.Model):
     def unlink(self, cr, uid, ids, context=None):
         if isinstance(ids, (int, long)):
             ids = [ids]
-        addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
+        #addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
+        config = openerp.tools.config
+        addon_path = config['static_http_document_root']
         for image in self.browse(cr, uid, ids, context=context):
             path = self._image_path(cr, uid, image, context=context)
             name, extention = os.path.splitext(path)
@@ -96,7 +97,9 @@ class product_images(orm.Model):
         full_path = False
         local_media_repository = self.pool.get('res.company').\
              get_local_media_repository(cr, uid, context=context)
-        addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
+        config = openerp.tools.config
+        addon_path = config['static_http_document_root']     
+        #addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
         if local_media_repository:
             full_path = os.path.join(
                 local_media_repository,
@@ -193,7 +196,9 @@ class product_images(orm.Model):
         image = self.browse(cr, uid, id, context=context)
         full_path = self._image_path(cr, uid, image, context=context)
         if full_path:
-            addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
+            #addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
+            config = openerp.tools.config
+            addon_path = config['static_http_document_root']
             path = addon_path + full_path
             if self._save_file(path, value):
                 #config = openerp.tools.config
