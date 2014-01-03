@@ -159,7 +159,7 @@ class product_images(orm.Model):
         try:
             dir_path = os.path.dirname(image_filestore)
             if not os.path.exists(dir_path):
-                os.makedirs(dir_path, 0755)
+                os.makedirs(dir_path, 0777)
         except OSError, e:
             raise osv.except_osv(
                     _('Error'),
