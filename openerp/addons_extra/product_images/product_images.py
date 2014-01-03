@@ -56,25 +56,25 @@ class product_images(orm.Model):
         return super(product_images, self).unlink(cr, uid, ids, context=context)
 
     def create(self, cr, uid, vals, context=None):       
-        if vals.get('name') and not vals.get('extension'):
-            vals['name'], vals['extension'] = os.path.splitext(vals['name'])
+        if vals.get('filename') and not vals.get('extension'):
+            vals['filename'], vals['extension'] = os.path.splitext(vals['filename'])
             vals['name'] = sequenceImage = self.pool.get('ir.sequence').get(cr, uid, 'product.images')
         return super(product_images, self).create(cr, uid, vals, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         if not isinstance(ids, list):
             ids = [ids]
-        if vals.get('name') and not vals.get('extension'):
-            vals['name'], vals['extension'] = os.path.splitext(vals['name'])
+        if vals.get('filename') and not vals.get('extension'):
+            vals['filename'], vals['extension'] = os.path.splitext(vals['filename'])
         upd_ids = ids[:]
-        if vals.get('name') or vals.get('extension'):
+        if vals.get('filename') or vals.get('extension'):
             images = self.browse(cr, uid, upd_ids, context=context)
             for image in images:
                 old_full_path = self._image_path(cr, uid, image, context=context)
                 if not old_full_path:
                     continue
                 # all the stuff below is there to manage the files on the filesystem
-                if vals.get('name') and (image.name != vals['name']) \
+                if vals.get('filename') and (image.name != vals['filename']) \
                     or vals.get('extension') and (image.extension != vals['extension']):
                     super(product_images, self).write(
                         cr, uid, image.id, vals, context=context)
@@ -218,6 +218,7 @@ class product_images(orm.Model):
 
     _columns = {
         'name': fields.char('Image Title', size=64),
+        'filename': fields.char('Filename', size=64),
         'extension': fields.char('file extension', oldname='extention'),
         'link': fields.boolean('Link?',
                                help="Images can be linked from files on "

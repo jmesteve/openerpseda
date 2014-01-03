@@ -44,7 +44,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-_ad = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'addons') # default addons path (base)
+_ad = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'addons')  # default addons path (base)
 ad_paths = []
 
 # Modules already loaded
@@ -84,7 +84,7 @@ class AddonsImportHook(object):
     def find_module(self, module_name, package_path):
         module_parts = module_name.split('.')
         if len(module_parts) == 3 and module_name.startswith('openerp.addons.'):
-            return self # We act as a loader too.
+            return self  # We act as a loader too.
 
         # TODO list of loadable modules can be cached instead of always
         # calling get_module_path().
@@ -103,7 +103,7 @@ To import it, use `import openerp.addons.<module>.`.""" % (module_name, path))
                 # Using `import <module_name>` instead of
                 # `import openerp.addons.<module_name>` is ugly but not harmful
                 # and kept for backward compatibility.
-                return self # We act as a loader too.
+                return self  # We act as a loader too.
 
     def load_module(self, module_name):
 
@@ -153,7 +153,7 @@ def initialize_sys_path():
         return
 
     ad_paths = map(lambda m: os.path.abspath(tools.ustr(m.strip())), tools.config['addons_path'].split(','))
-    ad_paths.append(os.path.abspath(_ad)) # for get_module_path
+    ad_paths.append(os.path.abspath(_ad))  # for get_module_path
     sys.meta_path.append(AddonsImportHook())
 
 def get_module_path(module, downloaded=False, display_warning=True):
@@ -200,7 +200,7 @@ def get_module_filetree(module, dir='.'):
             continue
 
         if dir:
-            f = f[len(dir)+int(not dir.endswith('/')):]
+            f = f[len(dir) + int(not dir.endswith('/')):]
         lst = f.split(os.sep)
         current = tree
         while len(lst) != 1:
@@ -291,7 +291,7 @@ def get_module_resource(module, *args):
         if os.path.exists(resource_path):
             return resource_path
     elif zipfile.is_zipfile(mod_path + '.zip'):
-        zip = zipfile.ZipFile( mod_path + ".zip")
+        zip = zipfile.ZipFile(mod_path + ".zip")
         files = ['/'.join(f.split('/')[1:]) for f in zip.namelist()]
         resource_path = '/'.join(args)
         if resource_path in files:
@@ -302,7 +302,7 @@ def get_module_icon(module):
     iconpath = ['static', 'src', 'img', 'icon.png']
     if get_module_resource(module, *iconpath):
         return ('/' + module + '/') + '/'.join(iconpath)
-    return '/base/'  + '/'.join(iconpath)
+    return '/base/' + '/'.join(iconpath)
 
 def load_information_from_description_file(module):
     """
@@ -315,7 +315,7 @@ def load_information_from_description_file(module):
     mod_path = get_module_path(module)
     if terp_file:
         info = {}
-        if os.path.isfile(terp_file) or zipfile.is_zipfile(mod_path+'.zip'):
+        if os.path.isfile(terp_file) or zipfile.is_zipfile(mod_path + '.zip'):
             # default values for descriptor
             info = {
                 'application': False,
@@ -352,7 +352,7 @@ def load_information_from_description_file(module):
             info['version'] = adapt_version(info['version'])
             return info
 
-    #TODO: refactor the logger in this file to follow the logging guidelines
+    # TODO: refactor the logger in this file to follow the logging guidelines
     #      for 6.0
     _logger.debug('module %s: no descriptor file'
         ' found: __openerp__.py or __terp__.py (deprecated)', module)
@@ -500,7 +500,7 @@ def get_test_modules(module, submodule, explode):
 
     # Discover available test sub-modules.
     m = sys.modules[module]
-    submodule_names =  sorted([x for x in dir(m) \
+    submodule_names = sorted([x for x in dir(m) \
         if x.startswith('test_') and \
         isinstance(getattr(m, x), types.ModuleType)])
     submodules = [getattr(m, x) for x in submodule_names]
