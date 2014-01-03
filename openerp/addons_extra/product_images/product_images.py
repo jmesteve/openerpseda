@@ -19,19 +19,21 @@
 import base64
 import urllib
 import os
-
+import glob
+import openerp
+from openerp import tools
 
 from openerp.osv import fields, orm, osv
 from openerp.tools.translate import _
 
 import logging
-from pip.vendor.distlib.manifest import Manifest
 _logger = logging.getLogger(__name__)
 
 #TODO find a good solution in order to roll back changed done on file system
 #TODO add the possibility to move from a store system to an other
 # (example : moving existing image on database to file system)
-
+#./openerp/addons_extra
+#/product_images/static/src/img/
 
 class product_images(orm.Model):
     "Products Image gallery"
@@ -41,15 +43,21 @@ class product_images(orm.Model):
     def unlink(self, cr, uid, ids, context=None):
         if isinstance(ids, (int, long)):
             ids = [ids]
+        addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
         for image in self.browse(cr, uid, ids, context=context):
-            full_path = self._image_path(cr, uid, image, context=context)
+            path = self._image_path(cr, uid, image, context=context)
+            name, extention = os.path.splitext(path)
+            full_path = addon_path + name + '*' + extention
             if full_path:
-                os.path.isfile(full_path) and os.remove(full_path)
+                for filename in glob.glob(full_path):
+                    os.path.isfile(filename) and os.remove(filename)
+            
         return super(product_images, self).unlink(cr, uid, ids, context=context)
 
-    def create(self, cr, uid, vals, context=None):
+    def create(self, cr, uid, vals, context=None):       
         if vals.get('name') and not vals.get('extension'):
             vals['name'], vals['extension'] = os.path.splitext(vals['name'])
+            vals['name'] = sequenceImage = self.pool.get('ir.sequence').get(cr, uid, 'product.images')
         return super(product_images, self).create(cr, uid, vals, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -88,21 +96,23 @@ class product_images(orm.Model):
         full_path = False
         local_media_repository = self.pool.get('res.company').\
              get_local_media_repository(cr, uid, context=context)
+        addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
         if local_media_repository:
             full_path = os.path.join(
                 local_media_repository,
                 image.product_id.default_code,
-                '%s%s' % (image.name or '', image.extension or ''))
+                '%s%s' % (image.name or '', image.extension or '')
+                )
         return full_path
 
     def get_image(self, cr, uid, id, context=None):
         image = self.browse(cr, uid, id, context=context)
         if image.link:
             if image.url:
-                full_path = self._image_path(cr, uid, image, context=context)
-                #(filename, header) = urllib.urlretrieve(image.url)
-                
-                (filename, header) = urllib.urlretrieve(full_path)
+                config = openerp.tools.config
+                host = 'http://'+ config['db_host']+':'+ str(config['xmlrpc_port'])
+                url = host + image.url
+                (filename, header) = urllib.urlretrieve(url)
                 with open(filename, 'rb') as f:
                     img = base64.b64encode(f.read())
             else:
@@ -146,7 +156,7 @@ class product_images(orm.Model):
         try:
             dir_path = os.path.dirname(image_filestore)
             if not os.path.exists(dir_path):
-                os.makedirs(dir_path)
+                os.makedirs(dir_path, 0755)
         except OSError, e:
             raise osv.except_osv(
                     _('Error'),
@@ -156,19 +166,50 @@ class product_images(orm.Model):
     def _save_file(self, path, b64_file):
         """Save a file encoded in base 64"""
         self._check_filestore(path)
+        name, extention = os.path.splitext(path)
         with open(path, 'w') as ofile:
-            ofile.write(base64.b64decode(b64_file))
+            resize = tools.image_resize_image_medium(b64_file,size=(400, 300))
+            ofile.write(base64.b64decode(resize))
+            
+        path_small = name + 'small' + extention 
+        with open(path_small, 'w') as ofile:
+            resize_small = tools.image_resize_image_small(b64_file,size=(200, 150))
+            ofile.write(base64.b64decode(resize_small))
+        path_medium = name + 'medium' + extention 
+        with open(path_medium, 'w') as ofile:
+            resize_medium = tools.image_resize_image_medium(b64_file,size=(600, 450))
+            ofile.write(base64.b64decode(resize_medium))
+        path_big = name + 'big' + extention 
+        with open(path_big, 'w') as ofile:
+            resize_big = tools.image_resize_image_big(b64_file,size=(800, 600))
+            ofile.write(base64.b64decode(resize_big))
         return True
+        
 
     def _set_image(self, cr, uid, id, name, value, arg, context=None):
         image = self.browse(cr, uid, id, context=context)
         full_path = self._image_path(cr, uid, image, context=context)
         if full_path:
-            return self._save_file(full_path, value)
+            addon_path = self.pool.get('res.company').get_addon_path(cr, uid, context=context)
+            path = addon_path + full_path
+            if self._save_file(path, value):
+                #config = openerp.tools.config
+                #host = 'http://'+ config['db_host']+':'+ str(config['xmlrpc_port'])
+                #url = host + full_path
+                #name, extention = os.path.splitext(url)
+                url = full_path
+                name, extention = os.path.splitext(url)
+                url_big = name + 'big' + extention 
+                url_medium = name + 'medium' + extention 
+                url_small = name + 'small' + extention 
+                return self.write(cr, uid, id, {'url':url,'url_big':url_big,'url_medium':url_medium,'url_small':url_small}, context=context)
+            else:
+                return False
+        
         return self.write(cr, uid, id, {'file_db_store': value}, context=context)
 
     _columns = {
-        'name': fields.char('Image Title', required=True),
+        'name': fields.char('Image Title', size=64),
         'extension': fields.char('file extension', oldname='extention'),
         'link': fields.boolean('Link?',
                                help="Images can be linked from files on "
@@ -180,12 +221,15 @@ class product_images(orm.Model):
                                 string="File",
                                 filters='*.png,*.jpg,*.gif'),
         'url': fields.char('File Location'),
+        'url_big': fields.char('File Location Image Size Big'),
+        'url_medium': fields.char('File Location Image Size Medium'),
+        'url_small': fields.char('File Location Image Size Small'),
         'comments': fields.text('Comments'),
         'product_id': fields.many2one('product.product', 'Product')
         }
 
     _defaults = {
-        'link': False,
+        'link': True,
         }
 
     _sql_constraints = [('uniq_name_product_id',

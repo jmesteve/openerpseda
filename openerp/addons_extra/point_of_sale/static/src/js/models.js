@@ -172,11 +172,15 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                     return self.fetch('pos.category', ['id','name','parent_id','child_id','image'])
                 }).then(function(categories){
                     self.db.add_categories(categories);
-
+                    
+                    return self.fetch('product.images', ['id','product_id','name','extension','link','url','url_small','url_medium','url_big'])
+                }).then(function(productimages){
+                    self.db.add_productimages(productimages);
+                    
                     return self.fetch(
                         'product.product', 
                         ['name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code',
-                         'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description'],
+                         'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description', 'default_image'],
                         [['sale_ok','=',true],['available_in_pos','=',true]],
                         {pricelist: self.get('shop').pricelist_id[0]} // context for price
                     );
@@ -323,10 +327,10 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
     module.CashRegisterCollection = Backbone.Collection.extend({
         model: module.CashRegister,
     });
-
+    
     module.Product = Backbone.Model.extend({
         get_image_url: function(){
-            return instance.session.url('/web/binary/image', {model: 'product.product', field: 'image', id: this.get('id')});
+        	return instance.session.url('/web/binary/image', {model: 'product.product', field: 'image', id: this.get('id')});
         },
     });
 

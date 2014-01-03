@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@string='Configuration']/group[1]" position="inside">
                     <group name="product_images_grp" string="Product Images">
+                    	<field name="addon_path"/>
                         <field name="local_media_repository"/>
                     </group>
                 </xpath>

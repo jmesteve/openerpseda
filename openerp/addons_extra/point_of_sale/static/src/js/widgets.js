@@ -23,6 +23,7 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
         // returns a DOM Image object from an url, and cache the last 500 (by default) results
         get_image: function(url){
             var cached = this.cache[url];
+            //console.log('url:',url,' cached:',cached);
             if(cached){
                 this.access_time[url] = (new Date()).getTime();
                 return cached;
@@ -295,7 +296,9 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
         // returns the url of the product thumbnail
         renderElement: function() {
             this._super();
-            this.$('img').replaceWith(this.pos_widget.image_cache.get_image(this.model.get_image_url()));
+            //this.$('img').replaceWith(this.pos_widget.image_cache.get_image(this.model.get_image_url(url)));
+            this.$('img').replaceWith(this.pos_widget.image_cache.get_image(this.model.get('url')));
+            //console.log(this.model.get('url'));
             var self = this;
             $("a", this.$el).click(function(e){
                 if(self.click_product_action){

@@ -25,6 +25,9 @@ class ResCompany(orm.Model):
     """Override company to add images configuration"""
     _inherit = "res.company"
     _columns = {
+        'addon_path': fields.char(
+            'addon Path'
+            ),
         'local_media_repository': fields.char(
             'Images Repository Path',
             help='Local directory on the OpenERP server '
@@ -39,3 +42,11 @@ class ResCompany(orm.Model):
             return self.browse(cr, uid, id, context=context).local_media_repository
         user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
         return user.company_id.local_media_repository
+    def get_addon_path(self, cr, uid, id=None, context=None):
+        if isinstance(id, (tuple, list)):
+            assert len(id) == 1, "One ID expected"
+            id = id[0]
+        if id:
+            return self.browse(cr, uid, id, context=context).addon_path
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.company_id.addon_path

@@ -22,8 +22,9 @@ import logging
 import base64
 import urllib
 
+import openerp
 from openerp.osv import orm, fields
-
+from openerp import tools
 
 class product_product(orm.Model):
     _inherit = "product.product"
@@ -70,7 +71,36 @@ class product_product(orm.Model):
             else:
                 res[id] = False
         return res
+    
+    def get_image(self, cr, uid, id, context=None):
+        product = self.browse(cr, uid, id, context=context)
+        image = product.default_image
+        if image.link:
+            if image.url:
+                config = openerp.tools.config
+                host = 'http://'+ config['db_host']+':'+ str(config['xmlrpc_port'])
+                url = host + image.url
+                (filename, header) = urllib.urlretrieve(url)
+                with open(filename, 'rb') as f:
+                    img = base64.b64encode(f.read())
+                return img
+            else:
+                return False
+        else:
+            img = product.image
+        return img
 
+    
+    def _get_image(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for each in ids:
+            res[each] = self.get_image(cr, uid, each, context=context)
+        return res
+    
+    def _set_image(self, cr, uid, id, name, value, args, context=None):
+        return self.write(cr, uid, [id], {'image': tools.image_resize_image_big(value)}, context=context)
+
+    
     _columns = {
         'image_ids': fields.one2many(
                 'product.images',
@@ -80,6 +110,14 @@ class product_product(orm.Model):
             _get_main_image,
             type="binary",
             string="Main Image"),
+        'default_image': fields.many2one('product.images','Default Image', required=False,
+            domain="[('product_id','=',id)]"),
+        'image_medium': fields.function(_get_image,fnct_inv=_set_image,
+            string="Medium-sized image", type="binary", 
+            help="Medium-sized image of the product. It is automatically "\
+                 "resized as a 128x128px image, with aspect ratio preserved, "\
+                 "only when the image exceeds one of those sizes. Use this field in form views or some kanban views."),
+        
     }
 
     def write(self, cr, uid, ids, vals, context=None):
