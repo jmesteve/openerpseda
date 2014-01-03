@@ -110,8 +110,11 @@ class product_images(orm.Model):
         if image.link:
             if image.url:
                 config = openerp.tools.config
-                if config['netrpc_interface'] and config['xmlrpc_port']:
+                
+                if config['netrpc_interface'] =='localhost' and config['xmlrpc_port']:
                     host = 'http://'+ config['netrpc_interface']+':'+ str(config['xmlrpc_port'])
+                elif config['netrpc_interface'] !='localhost': 
+                    host = 'https://'+ config['netrpc_interface']
                 else:
                     return False
                 url = host + image.url
