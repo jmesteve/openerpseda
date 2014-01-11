@@ -174,12 +174,12 @@ class product_images(orm.Model):
         self._check_filestore(path)
         name, extention = os.path.splitext(path)
         with open(path, 'w') as ofile:
-            resize = tools.image_resize_image_medium(b64_file,size=(400, 300))
+            resize = tools.image_resize_image_medium(b64_file,size=(200, 150))
             ofile.write(base64.b64decode(resize))
             
         path_small = name + 'small' + extention 
         with open(path_small, 'w') as ofile:
-            resize_small = tools.image_resize_image_small(b64_file,size=(200, 150))
+            resize_small = tools.image_resize_image_small(b64_file,size=(100, 75))
             ofile.write(base64.b64decode(resize_small))
         path_medium = name + 'medium' + extention 
         with open(path_medium, 'w') as ofile:
