@@ -12,6 +12,7 @@ from openerp.osv import osv
 from openerp.tools.translate import _
 
 
+
 class ImportCatalog(osv.TransientModel):
     "Import catalog"
     _name = 'magento.instance.import_catalog'

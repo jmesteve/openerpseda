@@ -187,6 +187,8 @@
                                 type='action' class="oe_highlight" string='Export Inventory'/>
                         <button name="%(action_magento_export_catalog)d"
                                 type='action' class="oe_highlight" string='Export Catalog'/>
+                        <button name="%(action_magento_export_categories)d"
+                                type="action" class="oe_highlight" string='Export Categories'/>
                     </header>
                     <sheet>
                         <group>

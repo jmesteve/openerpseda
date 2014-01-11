@@ -290,7 +290,8 @@ class InstanceWebsite(osv.Model):
                 )
 
         return products
-
+    
+   
 
 class WebsiteStore(osv.Model):
     """Magento Website Store or Store view groups

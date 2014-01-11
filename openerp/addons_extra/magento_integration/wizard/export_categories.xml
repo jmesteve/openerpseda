@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_magento_export_categories" model="ir.ui.view">
+            <field name="name">magento.instance.export_categories.form</field>
+            <field name="model">magento.instance.export_categories</field>
+            <field name="arch" type="xml">
+                <form string="Export Categories" version="7.0">
+                    <field name="id" invisible="1"/>
+                    <group>
+                        <h3 class="oe_grey">
+                            This wizard will export all the product categories
+                            for this magento instance.
+                        </h3>
+                    </group>
+                     
+                     <group>
+                        <separator string="Select categories to export"/>
+                        <field name="categories" nolabel="1" colspan="4"/>
+                    </group>
+                    
+                    
+                    <footer>
+                        <button string="Continue" type="object"
+                            name="export_categories" />
+                        <button string="Close" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_magento_export_categories" model="ir.actions.act_window">
+            <field name="name">Export Categories</field>
+            <field name="res_model">magento.instance.export_categories</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="view_magento_export_categories"/>
+           <field name="target">new</field>
+       </record>
+
+    </data>
+</openerp>

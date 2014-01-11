@@ -183,7 +183,7 @@ class MagentoInstanceCategory(osv.Model):
             'Magento ID', required=True, select=True,
         ),
         instance=fields.many2one(
-            'magento.instance', 'Magento Instance', readonly=True,
+            'magento.instance', 'Magento Instance', readonly=False,
             select=True, required=True
         ),
         category=fields.many2one(
@@ -461,6 +461,10 @@ class Product(osv.Model):
         :param websites: List of Browse record of websites
         :param context: Application context
         """
+        categoria = map(
+                lambda mag_categ: mag_categ.magento_id,
+                categories[0].magento_ids)
+        
         return {
             'categories': map(
                 lambda mag_categ: mag_categ.magento_id,

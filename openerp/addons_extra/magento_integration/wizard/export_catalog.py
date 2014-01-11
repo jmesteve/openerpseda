@@ -81,6 +81,8 @@ class ExportCatalog(osv.TransientModel):
             'magento_website': website.id,
             'magento_attribute_set': record.attribute_set,
         })
+        
+        records = record.products
         for product in record.products:
             product_obj.export_to_magento(
                 cursor, user, product, record.category, context=context

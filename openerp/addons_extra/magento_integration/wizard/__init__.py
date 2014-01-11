@@ -17,3 +17,4 @@ import export_tier_prices
 import import_carriers
 import export_shipment_status
 import export_catalog
+import export_categories

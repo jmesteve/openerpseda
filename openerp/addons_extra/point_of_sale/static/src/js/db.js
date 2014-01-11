@@ -163,14 +163,14 @@ function openerp_pos_db(instance, module){
         add_productimages: function(productimages){
         	for(var i = 0, len = productimages.length; i < len; i++){
         		var images = productimages[i];
-        		console.log(i,images);
+        		//console.log(i,images);
         		if (typeof images === "undefined");
         		else if (images.url === false);
         		else{
         			this.product_images[images.id] = images;
         		}
         	}
-        	console.log(this.product_images);
+        	//console.log(this.product_images);
         },
         add_products: function(products){
             var stored_categories = this.product_by_category_id;
