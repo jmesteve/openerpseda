@@ -771,7 +771,7 @@
 
 .point-of-sale .pos-sale-ticket {
     text-align: left;
-    width: 300px;
+    width: 65mm;
     background-color: white;
     margin: 20px;
     padding: 15px;
@@ -829,7 +829,7 @@
     .point-of-sale .pos-sale-ticket{
         margin-left: auto !important;
         margin-right: auto !important;
-        border: solid 1px black !important;
+        /*border: solid 1px black !important;*/
     }
 }
 

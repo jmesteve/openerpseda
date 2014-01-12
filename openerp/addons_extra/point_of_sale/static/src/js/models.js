@@ -402,11 +402,12 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
         },
         get_quantity_str_with_unit: function(){
             var unit = this.get_unit();
-            if(unit && unit.name !== 'Unit(s)'){
-                return this.quantityStr + ' ' + unit.name;
-            }else{
-                return this.quantityStr;
-            }
+            //if(unit && unit.name !== 'Unit(s)'){
+            //    return this.quantityStr + ' ' + unit.name;
+            //}else{
+            //    return this.quantityStr;
+            return this.quantityStr + ' x ';
+            //}
         },
         // return the unit of measure of the product
         get_unit: function(){
