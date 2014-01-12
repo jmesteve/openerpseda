@@ -619,6 +619,7 @@
                     <t t-esc="widget.format_currency(widget.currentOrder.getPaidTotal() - widget.currentOrder.getTotalTaxIncluded())"/>
                     </td></tr>
             </table>
+            <br /><t t-esc="widget.company.rml_header1"/>
         </div>
     </t>
 

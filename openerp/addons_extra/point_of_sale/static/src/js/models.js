@@ -94,6 +94,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                         'name',
                         'phone',
                         'partner_id',
+                        'rml_header1',
                     ],
                     [['id','=',users[0].company_id[0]]]);
                 }).then(function(companies){
@@ -602,7 +603,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                 creationDate:   new Date(),
                 orderLines:     new module.OrderlineCollection(),
                 paymentLines:   new module.PaymentlineCollection(),
-                name:           "Order " + this.generateUniqueId(),
+                name:           "Ticket " + this.generateUniqueId(),
                 client:         null,
             });
             this.pos =     attributes.pos; 
@@ -771,6 +772,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                     vat: company.vat,
                     name: company.name,
                     phone: company.phone,
+                    rml_header1: company.rml_header1
                 },
                 shop:{
                     name: shop.name,
