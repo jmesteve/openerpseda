@@ -1322,6 +1322,7 @@ class ean_wizard(osv.osv_memory):
     _columns = {
         'ean13_pattern': fields.char('Reference', size=32, required=True, translate=True),
     }
+       
     def sanitize_ean13(self, cr, uid, ids, context):
         for r in self.browse(cr,uid,ids):
             ean13 = openerp.addons.product.product.sanitize_ean13(r.ean13_pattern)
@@ -1385,15 +1386,26 @@ class product_product(osv.osv):
     }
 
     def edit_ean(self, cr, uid, ids, context):
-        return {
-            'name': _("Assign a Custom EAN"),
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'pos.ean_wizard',
-            'target' : 'new',
-            'view_id': False,
-            'context':context,
-        }
+        products = self.browse(cr, uid, ids, context=context)
+        for product in products:
+            name = product.categ_id.name.lower()
+            parent_name =  product.categ_id.parent_id.name.lower()
+            id = str(product.id)
+            default_code = parent_name[:3] +'.' + name[:3] +'.' + id
+
+            ean13 = openerp.addons.product.product.sanitize_ean13(default_code)
+            self.pool.get('product.product').write(cr,uid,ids,{'ean13':ean13})
+            self.pool.get('product.product').write(cr,uid,ids,{'default_code':default_code})
+            
+        #return {
+        #    'name': _("Assign a Custom EAN"),
+        #    'type': 'ir.actions.act_window',
+        #    'view_type': 'form',
+        #    'view_mode': 'form',
+        #    'res_model': 'pos.ean_wizard',
+        #    'target' : 'new',
+        #    'view_id': False,
+        #    'context':context,
+        #}
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1132,7 +1132,7 @@ msgstr "devolver"
 #. module: point_of_sale
 #: view:product.product:0
 msgid "Set a Custom EAN"
-msgstr "Establecer un código EAN personalizado"
+msgstr "Establecer código EAN"
 
 #. module: point_of_sale
 #. openerp-web
