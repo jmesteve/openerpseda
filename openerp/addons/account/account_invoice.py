@@ -470,11 +470,8 @@ class account_invoice(osv.osv):
         for t in invoices:
             if t['state'] not in ('draft', 'cancel'):
                 raise openerp.exceptions.Warning(_('You cannot delete an invoice which is not draft or cancelled. You should refund it instead.'))
-
-# cambio para poder eliminar las facturas validadas  -> anulado elif
-            #elif t['internal_number']:
-             #   raise openerp.exceptions.Warning(_('You cannot delete an invoice after it has been validated (and received a number).  You can set it back to "Draft" state and modify its content, then re-confirm it.'))
- 
+            elif t['internal_number']:
+                raise openerp.exceptions.Warning(_('You cannot delete an invoice after it has been validated (and received a number).  You can set it back to "Draft" state and modify its content, then re-confirm it.'))
             else:
                 unlink_ids.append(t['id'])
 
@@ -670,14 +667,8 @@ class account_invoice(osv.osv):
         return {'value': val, 'domain': dom}
 
     # go from canceled state to draft state
-
     def action_cancel_draft(self, cr, uid, ids, *args):
-        
-      
-# cambio para poder eliminar las facturas validadas -> cambiado self.write
-        #self.write(cr, uid, ids, {'state':'draft'})
-        self.write(cr, uid, ids, {'state':'cancel', 'internal_number':False ,'move_id':False})
-        
+        self.write(cr, uid, ids, {'state':'draft'})
         wf_service = netsvc.LocalService("workflow")
         for inv_id in ids:
             wf_service.trg_delete(uid, 'account.invoice', inv_id, cr)

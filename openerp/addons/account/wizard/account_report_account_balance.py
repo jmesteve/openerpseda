@@ -31,7 +31,7 @@ class account_balance_report(osv.osv_memory):
     }
 
     _defaults = {
-        #'journal_ids': [],
+        'journal_ids': [],
     }
 
     def _print_report(self, cr, uid, ids, data, context=None):
