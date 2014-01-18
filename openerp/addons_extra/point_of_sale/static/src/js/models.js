@@ -95,6 +95,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                         'phone',
                         'partner_id',
                         'rml_header1',
+                        'refund',
                     ],
                     [['id','=',users[0].company_id[0]]]);
                 }).then(function(companies){
@@ -181,7 +182,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                     return self.fetch(
                         'product.product', 
                         ['name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code',
-                         'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description', 'default_image'],
+                         'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description', 'default_image','qty_available'],
                         [['sale_ok','=',true],['available_in_pos','=',true]],
                         {pricelist: self.get('shop').pricelist_id[0]} // context for price
                     );
@@ -215,8 +216,8 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                     }
                     self.set({'cashRegisters' : new module.CashRegisterCollection(self.get('bank_statements'))});
                 });
-        
             return loaded;
+            
         },
 
         // logs the usefull posmodel data to the console for debug purposes
@@ -235,6 +236,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
             console.log('PosModel: user_list:',this.get('user_list'));
             console.log('PosModel: user:',this.get('user'));
             console.log('PosModel.session:',this.session);
+            console.log('PosModel: this:',this);
             console.log('PosModel end of data log.');
         },
         
@@ -280,7 +282,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
         _flush: function(index){
             var self = this;
             var orders = this.db.get_orders();
-            console.log(orders);
+            //console.log(orders);
             self.set('nbr_pending_operations',orders.length);
 
             var order  = orders[index];
@@ -773,7 +775,8 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                     vat: company.vat,
                     name: company.name,
                     phone: company.phone,
-                    rml_header1: company.rml_header1
+                    rml_header1: company.rml_header1,
+                    refund: company.refund
                 },
                 shop:{
                     name: shop.name,

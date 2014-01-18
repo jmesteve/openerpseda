@@ -529,6 +529,7 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
                 }
 
                 button.appendTo(this.$('.category-list')).click(function(event){
+                	//console.log('.category-list');
                     var id = category.id;
                     var cat = self.pos.db.get_category_by_id(id);
                     self.set_category(cat);
@@ -537,6 +538,7 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
             });
             // breadcrumb click actions
             this.$(".oe-pos-categories-list a").click(function(event){
+            	//console.log(".oe-pos-categories-list a");
                 var id = $(event.target).data("category-id");
                 var category = self.pos.db.get_category_by_id(id);
                 self.set_category(category);
@@ -636,6 +638,7 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
                 this.scrollbar.destroy();
             }
             var products = this.pos.get('products').models || [];
+            //console.log(products);
             for(var i = 0, len = products.length; i < len; i++){
                 var product = new module.ProductWidget(self, {
                     model: products[i],

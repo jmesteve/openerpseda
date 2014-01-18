@@ -389,6 +389,23 @@
                 <div class="product-name">
                     <t t-esc="widget.model.get('name')"/>
                 </div>
+                <div>
+                	<t t-if="widget.model.get('qty_available')==0">
+                		<div class="product-stock product-stock0">
+                    		<t t-esc="widget.model.get('qty_available')"/>
+                    	</div>
+                    </t>
+                    <t t-if="widget.model.get('qty_available')==1">
+                    	<div class="product-stock product-stock1">
+                    		<t t-esc="widget.model.get('qty_available')"/>
+                    	</div>
+                    </t>
+                    <t t-if="widget.model.get('qty_available')>1">
+                    	<div class="product-stock product-stock2">
+                    		<t t-esc="widget.model.get('qty_available')"/>
+                    	</div>
+                    </t>
+                </div>
             </a>
         </li>
     </t>
@@ -625,6 +642,7 @@
                     </td></tr>
             </table>
             <br /><t t-esc="widget.company.rml_header1"/>
+            <br /><br /><t t-esc="widget.company.refund"/>
         </div>
     </t>
 

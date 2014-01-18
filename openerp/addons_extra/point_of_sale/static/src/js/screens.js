@@ -740,16 +740,27 @@ function openerp_pos_screens(instance, module){ //module is instance.point_of_sa
 
         start: function(){ //FIXME this should work as renderElement... but then the categories aren't properly set. explore why
             var self = this;
+            this._super();
+            
             this.product_categories_widget = new module.ProductCategoriesWidget(this,{});
             this.product_categories_widget.replace($('.placeholder-ProductCategoriesWidget'));
 
             this.product_list_widget = new module.ProductListWidget(this,{
-                click_product_action: function(product){
+                click_product_action: function(product){  
                     if(product.get('to_weight') && self.pos.iface_electronic_scale){
                         self.pos_widget.screen_selector.set_current_screen(self.scale_screen, {product: product});
                     }else{
                         self.pos.get('selectedOrder').addProduct(product);
                     }
+                    //actualizar cantidad offline
+                    var product_db = self.pos.db.product_by_id[product.get('id')];
+                	var new_qty = product_db['qty_available'] - 1;
+                	product_db['qty_available']=new_qty;
+                	//render
+                	var pos_categ_id = product_db['pos_categ_id'][0];
+                	var category = self.pos.db.get_category_by_id(pos_categ_id);
+                	self.product_categories_widget.set_category(category);
+                	self.product_categories_widget.renderElement();
                 },
             });
             this.product_list_widget.replace($('.placeholder-ProductListWidget'));
@@ -883,6 +894,7 @@ function openerp_pos_screens(instance, module){ //module is instance.point_of_sa
                     icon: '/point_of_sale/static/src/img/icons/png48/validate.png',
                     click: function(){
                         self.validateCurrentOrder();
+                        console.log("validate_button");
                     },
                 });
 
@@ -899,7 +911,6 @@ function openerp_pos_screens(instance, module){ //module is instance.point_of_sa
         },
         validateCurrentOrder: function() {
             var currentOrder = this.pos.get('selectedOrder');
-
             this.pos.push_order(currentOrder.exportAsJSON()) 
             if(this.pos.iface_print_via_proxy){
                 this.pos.proxy.print_receipt(currentOrder.export_for_printing());

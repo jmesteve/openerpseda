@@ -273,6 +273,7 @@
     /*bottom:105px;*/
     bottom:0;
     border-right: solid 1px #CECBCB;
+    margin-right: 5px;
     background-color: white;
 }
 .point-of-sale #leftpane footer {
@@ -294,7 +295,7 @@
 }
 .point-of-sale #paypad button {
     height: 50px;
-    width: 208px;
+    width: 190px;
     margin: 0px -6px 4px -2px;
     font-weight: bold;
     vertical-align: middle;
@@ -334,6 +335,21 @@
     color: #555555;
     border-top: 1px solid #efefef;
 }
+
+.point-of-sale #numpad .mode-button {
+    height: 50px;
+    width: 70px;
+    margin: 0px 0px 4px 0px;
+    font-weight: bold;
+    vertical-align: middle;
+    color: #555555;
+    border-top: 1px solid #efefef;
+}
+
+.point-of-sale #numpad #numpad-backspace {
+    width: 70px !important;
+}
+
 .point-of-sale .input-button {
     font-size: 24px;
 }
@@ -597,6 +613,29 @@
     padding: 2px 5px;
     border-radius: 3px;
     box-shadow: 0px 1px 0px #9A9CC5, 0px 3px 0px #7E86AC, 0px 3px 3px rgba(12, 14, 68, 0.67);
+}
+
+.point-of-sale .product .product-stock {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    vertical-align: top;
+    line-height: 13px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    box-shadow: 0px 1px 0px #9A9CC5, 0px 3px 0px #7E86AC, 0px 3px 3px rgba(12, 14, 68, 0.67);
+}
+.point-of-sale .product .product-stock0 {
+    color: white;
+    background: #FF0000;
+}
+.point-of-sale .product .product-stock1 {
+    color: blue;
+    background: #FFFF00;
+}
+.point-of-sale .product .product-stock2 {
+    color: blue;
+    background: #40FF00;
 }
 
 .point-of-sale .product .product-name {
