@@ -22,7 +22,17 @@
             menu="False"
             rml="point_of_sale/report/pos_details.rml"
              />
-
+		
+		<report
+            id="pos_receipt"
+            string="Receipt"
+            model="pos.order"
+            name="pos.receipt"
+            auto="False"
+            multi="True"
+            rml="point_of_sale/report/pos_receipt.rml"
+             />
+		
         <report
             id="pos_details_summary"
             string="Sales (summary)"

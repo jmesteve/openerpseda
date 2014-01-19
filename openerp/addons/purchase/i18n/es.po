@@ -953,6 +953,7 @@ msgstr "será creado para subcontrar el trabajo"
 #: model:ir.actions.act_window,name:purchase.open_board_purchase
 #: model:ir.ui.menu,name:purchase.menu_board_purchase
 #: model:ir.ui.menu,name:purchase.menu_purchase_config
+#: model:ir.ui.menu,name:base.menu_purchase_root
 #: view:res.partner:0
 msgid "Purchases"
 msgstr "Compras"
