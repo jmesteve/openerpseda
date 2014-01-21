@@ -28,6 +28,7 @@ class pos_session_opening(osv.osv_memory):
         context = context or {}
         data = self.browse(cr, uid, ids[0], context=context)
         context['active_id'] = data.pos_session_id.id
+        self.pool.get('pos.session').write(cr, uid,context['active_id'],{'user_id' :uid}, context=context)
         return {
             'type' : 'ir.actions.client',
             'name' : _('Start Point Of Sale'),
@@ -87,7 +88,7 @@ class pos_session_opening(osv.osv_memory):
         session_ids = proxy.search(cr, uid, [
             ('state', '!=', 'closed'),
             ('config_id', '=', config_id),
-            ('user_id', '=', uid),
+            #('user_id', '=', uid),
         ], context=context)
         if session_ids:
             session = proxy.browse(cr, uid, session_ids[0], context=context)

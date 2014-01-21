@@ -111,13 +111,15 @@ class product_images(orm.Model):
     def get_image(self, cr, uid, id, context=None):
         image = self.browse(cr, uid, id, context=context)
         if image.link:
-            if image.url:
+            url = image.url
+            if url:
+                url = ''.join([i if ord(i) < 128 else '' for i in url])
                 config = openerp.tools.config
                 if config['netrpc_interface'] and config['xmlrpc_port']:
                     host = 'http://'+ config['netrpc_interface']+':'+ str(config['xmlrpc_port'])
                 else:
                     return False
-                url = host + image.url
+                url = host + url
                 (filename, header) = urllib.urlretrieve(url)
                 with open(filename, 'rb') as f:
                     img = base64.b64encode(f.read())

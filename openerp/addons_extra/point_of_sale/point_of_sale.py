@@ -375,7 +375,7 @@ class pos_session(osv.osv):
             'tag' : 'pos.ui',
             'context' : context,
         }
-
+  
     def wkf_action_open(self, cr, uid, ids, context=None):
         # second browse because we need to refetch the data from the DB for cash_register_id
         for record in self.browse(cr, uid, ids, context=context):
@@ -1392,7 +1392,7 @@ class product_product(osv.osv):
             parent_name =  product.categ_id.parent_id.name.lower()
             id = str(product.id)
             default_code = parent_name[:3] +'.' + name[:3] +'.' + id
-
+            default_code = ''.join([i if ord(i) < 128 else '' for i in default_code])
             ean13 = openerp.addons.product.product.sanitize_ean13(default_code)
             self.pool.get('product.product').write(cr,uid,ids,{'ean13':ean13})
             self.pool.get('product.product').write(cr,uid,ids,{'default_code':default_code})

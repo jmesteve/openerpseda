@@ -74,12 +74,13 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
 
         // helper function to load data from the server
         fetch: function(model, fields, domain, ctx){
-            return new instance.web.Model(model).query(fields).filter(domain).context(ctx).all()
+        	instance_new = new instance.web.Model(model).query(fields).filter(domain).context(ctx).all();
+        	console.log(instance_new);
+            return instance_new;
         },
         // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded. 
         load_server_data: function(){
             var self = this;
-
             var loaded = self.fetch('res.users',['name','company_id'],[['id','=',this.session.uid]]) 
                 .then(function(users){
                     self.set('user',users[0]);
