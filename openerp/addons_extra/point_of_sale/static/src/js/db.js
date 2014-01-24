@@ -36,7 +36,6 @@ function openerp_pos_db(instance, module){
             options = options || {};
             this.name = options.name || this.name;
             this.limit = options.limit || this.limit;
-
             //cache the data in memory to avoid roundtrips to the localstorage
             this.cache = {};
 
@@ -262,13 +261,27 @@ function openerp_pos_db(instance, module){
             return undefined;
         },
         get_product_by_category: function(category_id){
+        	//console.log(this.product_by_category_id);
             var product_ids  = this.product_by_category_id[category_id];
             var list = [];
+            var stockmin = $("#stockmin-select").val();
+            var limit = this.limit;
             if (product_ids) {
-                for (var i = 0, len = Math.min(product_ids.length, this.limit); i < len; i++) {
-                    list.push(this.product_by_id[product_ids[i]]);
+                for (var i = 0, len = product_ids.length; limit>0 && i < len; i++) {
+                	product = this.product_by_id[product_ids[i]];
+                	if(stockmin==1){
+	                	if(product.qty_available>0){
+	                		list.push(product);
+	                		limit--;
+	                	}
+                	}
+                	else{
+                		list.push(product);
+                		limit--;
+                	}
                 }
             }
+            //console.log(list.length);
             return list;
         },
         /* returns a list of products with :

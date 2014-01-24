@@ -5,9 +5,17 @@
 
     <t t-name="PosWidget">
         <div class="point-of-sale">
+        	
             <div id="topheader">
                 <div id="branding">
-                    <img src="/point_of_sale/static/src/img/logo.png" />
+                    <!--<img src="/point_of_sale/static/src/img/logo.png" />-->
+                    <button class="cashier-button">select cashier</button>
+                    <select id="userlist-select" style="display:none;">
+        			</select>
+        			<select id="stockmin-select"> 
+        				<option value="1" >stock minimum</option>
+        				<option value="0" >all the stock</option>
+        			</select>
                     <span class="placeholder-UsernameWidget"></span>
                 </div>
                 <div id="rightheader">

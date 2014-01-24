@@ -21,6 +21,7 @@
             user-select: none;
 }
 
+
 .point-of-sale ul, .point-of-sale li  {
     margin: 0;
     padding: 0;
@@ -120,6 +121,62 @@
     background: -moz-linear-gradient(#7b7979, #393939);
     background: -webkit-gradient(linear, left top, left bottom, from(#7b7979), to(#393939));
 }
+
+.point-of-sale #topheader button.cashier-button {
+	color: #273072;
+    height:27px;
+    margin:3px;
+    border: 1px solid #353A7E;
+    font-size:14px;
+    background: #7f82ac;
+    background: -webkit-gradient(linear, left top, left bottom, from(#b2b3d7), to(#7f82ac));
+    background: -moz-linear-gradient(#b2b3d7, #7f82ac);
+    background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
+    background:      linear-gradient(#b2b3d7, #7f82ac);
+    width: 120px;
+    margin-left:4px;
+    margin-right:4px;
+}
+
+.point-of-sale #userlist-select{
+	color: #273072;
+    margin: 3px;
+    width: 120px;
+    height: 27px;
+    border: 1px solid #353A7E;
+    font-size:14px;
+    background: #7f82ac;
+    background: -webkit-gradient(linear, left top, left bottom, from(#b2b3d7), to(#7f82ac));
+    background: -moz-linear-gradient(#b2b3d7, #7f82ac);
+    background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
+    background:      linear-gradient(#b2b3d7, #7f82ac);
+    margin-left:4px;
+    margin-right:4px;
+    appearance:button;
+	-moz-appearance:button; /* Firefox */
+	-webkit-appearance:button; /* Safari and Chrome */
+}
+
+.point-of-sale #stockmin-select{
+	color: #273072;
+	padding-left:4px;
+    margin: 3px;
+    width: 120px;
+    height: 27px;
+    border: 1px solid #353A7E;
+    font-size:14px;
+    background: #7f82ac;
+    background: -webkit-gradient(linear, left top, left bottom, from(#b2b3d7), to(#7f82ac));
+    background: -moz-linear-gradient(#b2b3d7, #7f82ac);
+    background:  -ms-linear-gradient(#b2b3d7, #7f82ac);
+    background:      linear-gradient(#b2b3d7, #7f82ac);
+    margin-left:4px;
+    margin-right:4px;
+    appearance:button;
+	-moz-appearance:button; /* Firefox */
+	-webkit-appearance:button; /* Safari and Chrome */
+}
+
 
 /*  a) The left part of the top-bar */
 

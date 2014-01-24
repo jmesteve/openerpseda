@@ -757,7 +757,7 @@ function openerp_pos_screens(instance, module){ //module is instance.point_of_sa
                 	var new_qty = product_db['qty_available'] - 1;
                 	product_db['qty_available']=new_qty;
                 	//render
-                	var pos_categ_id = product_db['pos_categ_id'][0];
+                	var pos_categ_id = self.product_categories_widget.category.id;
                 	var category = self.pos.db.get_category_by_id(pos_categ_id);
                 	self.product_categories_widget.set_category(category);
                 	self.product_categories_widget.renderElement();
@@ -894,7 +894,7 @@ function openerp_pos_screens(instance, module){ //module is instance.point_of_sa
                     icon: '/point_of_sale/static/src/img/icons/png48/validate.png',
                     click: function(){
                         self.validateCurrentOrder();
-                        console.log("validate_button");
+                        //console.log("validate_button");
                     },
                 });
 

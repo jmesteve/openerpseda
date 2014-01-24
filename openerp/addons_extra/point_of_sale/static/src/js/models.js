@@ -74,9 +74,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
 
         // helper function to load data from the server
         fetch: function(model, fields, domain, ctx){
-        	instance_new = new instance.web.Model(model).query(fields).filter(domain).context(ctx).all();
-        	console.log(instance_new);
-            return instance_new;
+            return new instance.web.Model(model).query(fields).filter(domain).context(ctx).all();
         },
         // loads all the needed data on the sever. returns a deferred indicating when all the data has loaded. 
         load_server_data: function(){
@@ -84,7 +82,6 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
             var loaded = self.fetch('res.users',['name','company_id'],[['id','=',this.session.uid]]) 
                 .then(function(users){
                     self.set('user',users[0]);
-
                     return self.fetch('res.company',
                     [
                         'currency_id',
@@ -100,14 +97,17 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                     ],
                     [['id','=',users[0].company_id[0]]]);
                 }).then(function(companies){
+                	//console.log(companies);
                     self.set('company',companies[0]);
 
                     return self.fetch('res.partner',['contact_address'],[['id','=',companies[0].partner_id[0]]]);
-                }).then(function(company_partners){
+                }).then(function(company_partners){//company_partners es el objeto qeu devuleve el return anterior
+                	//console.log(company_partners);
                     self.get('company').contact_address = company_partners[0].contact_address;
-
+                    
                     return self.fetch('product.uom', null, null);
                 }).then(function(units){
+                	//console.log(units);
                     self.set('units',units);
                     var units_by_id = {};
                     for(var i = 0, len = units.length; i < len; i++){
@@ -117,26 +117,31 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                     
                     return self.fetch('product.packaging', null, null);
                 }).then(function(packagings){
+                	//console.log(packagings);
                     self.set('product.packaging',packagings);
                     
                     return self.fetch('res.users', ['name','ean13'], [['ean13', '!=', false]]);
                 }).then(function(users){
+                	//console.log(users);
                     self.set('user_list',users);
 
                     return self.fetch('res.partner', ['name','ean13'], [['ean13', '!=', false]]);
                 }).then(function(partners){
+                	//console.log(partners);
                     self.set('partner_list',partners);
 
                     return self.fetch('account.tax', ['amount', 'price_include', 'type']);
                 }).then(function(taxes){
+                	//console.log(taxes);
                     self.set('taxes', taxes);
-
+                    //console.log(self.session);
                     return self.fetch(
                         'pos.session', 
                         ['id', 'journal_ids','name','user_id','config_id','start_at','stop_at'],
                         [['state', '=', 'opened'], ['user_id', '=', self.session.uid]]
                     );
                 }).then(function(sessions){
+                	//console.log(sessions);
                     self.set('pos_session', sessions[0]);
 
                     return self.fetch(
@@ -247,7 +252,12 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
             if( this.get('orders').isEmpty()){
                 this.add_new_order();
             }else{
-                this.set({ selectedOrder: this.get('orders').last() });
+            	lastOrder = this.get('orders').last();
+                var user = this.get('user');
+            	var cashier = lastOrder.get('cashier');
+            	user.name = cashier.name;
+            	user.id = cashier.id;
+                this.set({ selectedOrder: lastOrder });
             }
         },
 
@@ -261,6 +271,12 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
         add_new_order: function(){
             var order = new module.Order({pos:this});
             this.get('orders').add(order);
+            var user = this.get('user');
+            var cashier_object = {
+            		'id':user.id,
+            		'name':user.name,
+            };      
+            order.set('cashier',cashier_object);
             this.set('selectedOrder', order);
         },
 
@@ -292,6 +308,7 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
             }
             //try to push an order to the server
             // shadow : true is to prevent a spinner to appear in case of timeout
+            //order.data.user_id = $("#cashier_id").val();
             (new instance.web.Model('pos.order')).call('create_from_ui',[[order]],undefined,{ shadow:true })
                 .fail(function(unused, event){
                     //don't show error popup if it fails 
@@ -609,7 +626,14 @@ function openerp_pos_models(instance, module){ //module is instance.point_of_sal
                 paymentLines:   new module.PaymentlineCollection(),
                 name:           "Ticket " + this.generateUniqueId(),
                 client:         null,
+                cashier:        null,
             });
+            var user = attributes.pos.get('user');
+            var cashier_object = {
+            		'id':user.id,
+            		'name':user.name,
+            };
+            this.set('cashier',cashier_object);            
             this.pos =     attributes.pos; 
             this.selected_orderline = undefined;
             this.screen_data = {};  // see ScreenSelector

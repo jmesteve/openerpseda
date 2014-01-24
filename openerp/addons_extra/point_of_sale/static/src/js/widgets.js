@@ -67,6 +67,7 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
             this.$el.find('button#numpad-minus').click(_.bind(this.clickSwitchSign, this));
             this.$el.find('button.number-char').click(_.bind(this.clickAppendNewChar, this));
             this.$el.find('button.mode-button').click(_.bind(this.clickChangeMode, this));
+            this.$el.find('button.mode-button').click(_.bind(this.clickChangeMode, this));
         },
         clickDeleteLastChar: function() {
             return this.state.deleteLastChar();
@@ -370,6 +371,11 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
             this.$('button.close-order').off('click').click(_.bind(this.closeOrder, this));
         },
         selectOrder: function(event) {
+        	var user = this.pos.get('user');
+        	var cashier = this.order.get('cashier');
+        	user.name = cashier.name;
+        	user.id = cashier.id;
+        	//console.log(user,this);
             this.pos.set({
                 selectedOrder: this.order
             });
@@ -533,6 +539,7 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
                     var id = category.id;
                     var cat = self.pos.db.get_category_by_id(id);
                     self.set_category(cat);
+                    //console.log(self);
                     self.renderElement();
                 });
             });
@@ -542,6 +549,7 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
                 var id = $(event.target).data("category-id");
                 var category = self.pos.db.get_category_by_id(id);
                 self.set_category(category);
+                //console.log(self);
                 self.renderElement();
             });
 
@@ -867,6 +875,41 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
                 
                 self.$('.neworder-button').click(function(){
                     self.pos.add_new_order();
+                });
+                
+                self.$('.cashier-button').click(function(){
+                    var users = self.pos.get('user_list');
+                    var id = self.pos.get('user').id;
+                   	$('#userlist-select').empty();
+                   	$(".cashier-button").hide();
+                   	$("#userlist-select").show();
+                    for(var i=0;i< users.length;i++){
+                    	$('#userlist-select').append('<option value='+ users[i].id + ((id == users[i].id)?' selected>':'>')+ users[i].name +'</option>');
+                    }
+                });
+                
+                self.$('#stockmin-select').change(function(event){
+                	var pos_categ_id = self.product_screen.product_categories_widget.category.id;
+                	var category = self.pos.db.get_category_by_id(pos_categ_id);
+                	self.product_screen.product_categories_widget.set_category(category);
+                	self.product_screen.product_categories_widget.renderElement();
+                });
+                
+                self.$('#userlist-select').change(function(event){
+                	var id = event.target.value;
+                	var user = self.pos.get('user');
+                	var users = self.pos.get('user_list');
+                	for(var i=0;i< users.length;i++){
+                		if(id == users[i].id){
+                			user.name = users[i].name;
+                			//self.pos.set("user",users[i]);
+                			i=users.length;
+                		}
+                	}
+                	user.id = id;
+                	self.pos.add_new_order();
+                	$("#userlist-select").hide();
+                	$(".cashier-button").show();
                 });
                 
                 //when a new order is created, add an order button widget
