@@ -34,6 +34,15 @@
     'images': [],
     'depends': ['account'],
     'data': ['account_move_line.xml'],
+    'js': [
+        "static/src/js/account_move_line_extend.js",
+    ],
+    'qweb' : [
+        "static/src/xml/account_move_line_extend.xml",
+    ],
+    'css':[
+        "static/src/css/account_move_line_extend.css"
+    ],
     'demo': [],
     'installable': True,
     'application': True,

@@ -9,7 +9,7 @@
 		            <field name="inherit_id" ref="account.view_move_line_tree" />
 		            <field name="arch" type="xml">
 		            	<xpath expr="//field[@name='credit']" position="after">  
-		                    <field name="accumulated"/>
+		                    <field name="accumulated" sum="Total accumulated"/>
 		                </xpath>
 					</field>
 		</record>
