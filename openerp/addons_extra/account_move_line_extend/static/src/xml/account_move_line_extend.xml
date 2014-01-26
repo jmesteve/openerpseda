@@ -21,6 +21,8 @@
                 <select class="oe_account_select_account" >
                 </select>
             </div>
+            <button class="print_extract_button" type="button">Print</button>
+ 
         </div>
     </t>
 

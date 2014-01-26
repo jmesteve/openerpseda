@@ -25,3 +25,13 @@ msgstr "Diario Registros"
 msgid "accumulated"
 msgstr "Saldo acumulado"
 
+#. module: account_move_line_extend
+#: field:account.move.line,accumulated:0
+msgid "Balance"
+msgstr "Saldo"
+
+#. module: account_move_line_extend
+#: field:account.move.line,accumulated:0
+msgid "Total Balance"
+msgstr "Saldo"
+
