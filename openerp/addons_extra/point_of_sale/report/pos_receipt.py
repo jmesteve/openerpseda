@@ -70,6 +70,9 @@ class order(report_sxw.rml_parse):
                         WHERE absl.pos_statement_id =%d"""%(order_id)
         self.cr.execute(sql)
         data = self.cr.dictfetchall()
+        for line in data:
+            if line['amt'] <= 0:
+                line['name'] = 'Change'
         return data
 
 report_sxw.report_sxw('report.pos.receipt', 'pos.order', 'addons_extra/point_of_sale/report/pos_receipt.rml', parser=order, header=False)

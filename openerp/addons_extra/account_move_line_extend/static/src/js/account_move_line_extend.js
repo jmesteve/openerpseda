@@ -46,6 +46,7 @@ openerp.account.quickadd = function (instance) {
             	//mod.call("print_extract", []).then(function(result) {
                 //    console.log( result) ;
                 //});
+            	window.print();
             });
             
             this.on('edit:after', this, function () {

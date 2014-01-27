@@ -197,6 +197,12 @@ msgid "Reference"
 msgstr "Referencia"
 
 #. module: point_of_sale
+#: code:addons/point_of_sale/report/pos_receipt.py:75
+#, python-format
+msgid "Change"
+msgstr "Cambio"
+
+#. module: point_of_sale
 #: code:addons/point_of_sale/point_of_sale.py:1066
 #: code:addons/point_of_sale/point_of_sale.py:1083
 #: report:pos.invoice:0

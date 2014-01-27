@@ -906,6 +906,7 @@ function openerp_pos_widgets(instance, module){ //module is instance.point_of_sa
                 			i=users.length;
                 		}
                 	}
+                	//console.log(self);
                 	user.id = id;
                 	self.pos.add_new_order();
                 	$("#userlist-select").hide();
