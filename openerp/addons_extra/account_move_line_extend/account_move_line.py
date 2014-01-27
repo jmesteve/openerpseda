@@ -41,10 +41,10 @@ class account_move_line(osv.osv):
         #names = self.pool.get('account.account').name_get(cr, uid, ids, context)
         return res
     
-    def print_extract(self, cr, uid, context=None):
-        win_obj = self.pool.get('ir.actions.act_window')
-        res = win_obj.for_xml_id(cr, uid, 'account', 'account_report_general_ledger_view', context)
-        return res
+    #def print_extract(self, cr, uid, context=None):
+        #win_obj = self.pool.get('ir.actions.act_window')
+        #res = win_obj.for_xml_id(cr, uid, 'account', 'account_report_general_ledger_view', context)
+        #return res
         
 
     
