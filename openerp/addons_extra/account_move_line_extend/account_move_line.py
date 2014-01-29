@@ -28,7 +28,7 @@ class account_move_line(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             debit = line.debit
             credit = line.credit
-            res[line.id] = credit - debit
+            res[line.id] = debit - credit
         return res
     
     _columns = {
