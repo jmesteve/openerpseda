@@ -46,7 +46,19 @@ openerp.account.quickadd = function (instance) {
             	//mod.call("print_extract", []).then(function(result) {
                 //    console.log( result) ;
                 //});
-            	window.print();
+            	
+            	var extraCss = "/account_move_line_extend/static/src/css/popup_extract.css";
+            	var popClose = false;
+            	var mode = "popup";
+            	var popTitle = "extract";
+            	var options = {  'extraCss' : extraCss, 
+            					 'popClose': popClose, 
+            					 'mode': mode,
+            					 'popTitle': popTitle,
+            				   };
+
+                $('.oe_list').printArea(options);
+            	//window.print();
             });
             
             this.on('edit:after', this, function () {

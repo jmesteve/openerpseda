@@ -1,0 +1,28 @@
+table{
+    table-layout: fixed;
+    border-spacing: 0px;
+	border-collapse: separate;
+}
+
+th, td, tr {
+	border: 1px solid black;
+    overflow:!important;
+    width: 200px !important;
+	height:10px !important;
+	line-height: 20px; 
+}
+
+.oe_list_content thead{
+	background: #D8D8D8;
+}
+.oe_list_content thead tr{
+	height:10px  !important;
+	overflow: hidden;
+}
+.oe_list_content thead th{
+	
+}
+
+.oe_list_content tbody tr{
+	
+}

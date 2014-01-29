@@ -5,16 +5,24 @@ from openerp import pooler
 
 class account_move_line(osv.osv):
     _inherit = "account.move.line"
+    #accumulated_global = 0
+    #accumulateds = {}
+    
     
     def _get_accumulated(self, cr, uid, ids,name, unknow_none, context=None):
         res = dict.fromkeys(ids, False)
+        #accumulated = self.accumulated_global
+        lines = self.browse(cr, uid, ids, context=context)
+        #line0 = lines[0]
+        #self.accumulateds[line0.id] = [line0.debit-line0.credit,line0.date]
         accumulated = 0
-        for line in self.browse(cr, uid, ids, context=context):
+        for line in lines:
             debit = line.debit
             credit = line.credit
             accumulated += debit - credit
             res[line.id] = accumulated
         return res
+    
     def _get_balance(self, cr, uid, ids,name, unknow_none, context=None):
         res = dict.fromkeys(ids, False)
         for line in self.browse(cr, uid, ids, context=context):
@@ -28,6 +36,10 @@ class account_move_line(osv.osv):
                 'accumulated': fields.function(_get_accumulated, type='float', digits=(16,2), string='accumulated'),
                 }
     _order = "date, id"
+    
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        limit = 500
+        return super(account_move_line, self).search(cr, uid, args, offset, limit, order, context, count)
     
     def list_accounts(self, cr, uid, context=None):
         ids = self.pool.get('account.account').search(cr,uid,[],0, None,('code'))
