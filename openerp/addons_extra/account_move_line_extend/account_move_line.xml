@@ -9,6 +9,7 @@
 		            	<xpath expr="//field[@name='credit']" position="after"> 
 		            	    <field name="balance" sum="Total Balance"/> 
 		                    <field name="accumulated"/>
+		                    <field name="notes"/>
 		                </xpath>
 					</field>
 		</record>

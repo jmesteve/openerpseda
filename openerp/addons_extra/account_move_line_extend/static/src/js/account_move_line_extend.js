@@ -49,12 +49,16 @@ openerp.account.quickadd = function (instance) {
             	
             	var extraCss = "/account_move_line_extend/static/src/css/popup_extract.css";
             	var popClose = false;
-            	var mode = "popup";
+            	var mode = "popup";//popup
             	var popTitle = "extract";
             	var options = {  'extraCss' : extraCss, 
             					 'popClose': popClose, 
             					 'mode': mode,
             					 'popTitle': popTitle,
+            					 'popHt':1000,
+            					 'popWt':800,
+            					 'popX':200,
+            					 'popY':200,
             				   };
 
                 $('.oe_list').printArea(options);

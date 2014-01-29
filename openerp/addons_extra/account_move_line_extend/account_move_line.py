@@ -34,6 +34,7 @@ class account_move_line(osv.osv):
     _columns = {
                 'balance': fields.function(_get_balance, type='float',digits=(16,2), string='Balance'),
                 'accumulated': fields.function(_get_accumulated, type='float', digits=(16,2), string='accumulated'),
+                'notes': fields.char('notes',size=128),
                 }
     _order = "date, id"
     

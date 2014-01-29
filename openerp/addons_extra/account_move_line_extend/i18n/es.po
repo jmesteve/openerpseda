@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-24 18:42+0000\n"
-"PO-Revision-Date: 2014-01-24 18:42+0000\n"
+"POT-Creation-Date: 2014-01-29 22:25+0000\n"
+"PO-Revision-Date: 2014-01-29 22:25+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: account_move_line_extend
 #: model:ir.model,name:account_move_line_extend.model_account_move_line
 msgid "Journal Items"
-msgstr "Diario Registros"
+msgstr "Apuntes contables"
 
 #. module: account_move_line_extend
 #: field:account.move.line,accumulated:0
@@ -26,12 +26,17 @@ msgid "accumulated"
 msgstr "Saldo acumulado"
 
 #. module: account_move_line_extend
-#: field:account.move.line,accumulated:0
-msgid "Balance"
+#: field:account.move.line,balance:0
+msgid "balance"
 msgstr "Saldo"
 
 #. module: account_move_line_extend
-#: field:account.move.line,accumulated:0
+#: field:account.move.line,notes:0
+msgid "notes"
+msgstr "notas"
+
+#. module: account_move_line_extend
+#: view:account.move.line:0
 msgid "Total Balance"
-msgstr "Saldo"
+msgstr "Total Saldo"
 
