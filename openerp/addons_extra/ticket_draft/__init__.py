@@ -21,23 +21,4 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, orm
-from openerp import netsvc
-from openerp.tools.translate import _
-
-class purchase_order(orm.Model):
-    _inherit = "purchase.order"
-    
-    def action_cancel_draft(self, cr, uid, ids, *args):
-        if not len(ids):
-            return False
-        cr.execute('select id from purchase_order_line where order_id IN %s and state=%s', (tuple(ids), 'cancel'))
-        line_ids = map(lambda x: x[0], cr.fetchall())
-        self.write(cr, uid, ids, {'state': 'draft', 'invoice_ids': [], 'shipped': 0})
-        self.pool.get('purchase.order.line').write(cr, uid, line_ids, {'invoiced': False, 'state': 'draft', 'invoice_lines': [(6, 0, [])]})
-        wf_service = netsvc.LocalService("workflow")
-        for inv_id in ids:
-            wf_service.trg_delete(uid, 'purchase.order', inv_id, cr)
-            wf_service.trg_create(uid, 'purchase.order', inv_id, cr)
-        return True
-
+import ticket
