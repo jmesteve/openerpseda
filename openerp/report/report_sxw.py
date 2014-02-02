@@ -202,6 +202,7 @@ class rml_parse(object):
             self.rml_header = company_id.rml_header
             self.rml_header2 = company_id.rml_header2
             self.rml_header3 = company_id.rml_header3
+            self.rml_header4 = company_id.rml_header4
             self.logo = company_id.logo
 
     def _strip_name(self, name, maxlen=50):
@@ -347,13 +348,16 @@ class rml_parse(object):
         return text
 
     def _add_header(self, rml_dom, header='external'):
+        
         if header=='internal':
             rml_head =  self.rml_header2
         elif header=='internal landscape':
             rml_head =  self.rml_header3
+        elif header=='shipping':
+            rml_head =  self.rml_header4
         else:
             rml_head =  self.rml_header
-
+        
         head_dom = etree.XML(rml_head)
         for tag in head_dom:
             found = rml_dom.find('.//'+tag.tag)
@@ -395,9 +399,10 @@ class report_sxw(report_rml, preprocess.report):
         self.header = header
         self.store = store
         self.internal_header=False
-        if header=='internal' or header=='internal landscape':
-            self.internal_header=True
+        #if header=='internal' or header=='internal landscape':
+        #    self.internal_header=True
 
+       
     def getObjects(self, cr, uid, ids, context):
         table_obj = pooler.get_pool(cr.dbname).get(self.table)
         return table_obj.browse(cr, uid, ids, list_class=browse_record_list, context=context, fields_process=_fields_process)
