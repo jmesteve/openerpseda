@@ -32,8 +32,9 @@
     'website': 'https://github.com/jmesteve',
     'license': 'AGPL-3',
     'images': [],
-    'depends': ['account'],
-    'data': ['account_move_line.xml'],
+    'depends': ['account','warning_box'],
+    'data': ['account_move_line.xml',
+             'account.xml'],
     'js': [
         "static/src/js/account_move_line_extend.js",
     ],

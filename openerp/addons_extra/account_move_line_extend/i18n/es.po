@@ -40,3 +40,8 @@ msgstr "notas"
 msgid "Total Balance"
 msgstr "Total Saldo"
 
+#. module: account_move_line_extend
+#: code:addons/account_move_line_extend/account.py:12
+#, python-format
+msgid "You cannot change the code of account which contains journal items!"
+msgstr "¡No puede cambiar el código de una cuenta que contiene apuntes!"
