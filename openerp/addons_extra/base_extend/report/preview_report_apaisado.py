@@ -20,7 +20,15 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.modules import get_module_resource, get_module_path
-import report
-import base_extend
 
+from openerp.report import report_sxw
+
+class rmlparser(report_sxw.rml_parse):
+    def set_context(self, objects, data, ids, report_type = None):
+        super(rmlparser,self).set_context(objects, data, ids, report_type)
+        self.setCompany(objects[0])
+
+report_sxw.report_sxw('report.preview.report.apaisado', 'res.company',
+      'addons/base_extend/report/preview_report_apaisado.rml', parser=rmlparser, header='internal landscape')
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
