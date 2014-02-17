@@ -126,7 +126,8 @@ class res_partner(osv.osv):
                 continue
             vat_country, vat_number = self._split_vat(partner.vat)
             if not check_func(cr, uid, vat_country, vat_number, context=context):
-                return False
+                #return False
+                return {'value':True,'warning':{'title':'warning','message':'Vat is bad'}}
         return True
 
     def vat_change(self, cr, uid, ids, value, context=None):
